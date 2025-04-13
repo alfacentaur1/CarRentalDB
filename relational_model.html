@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<body>
+    <ul>
+        <li>Car(<u>plate_number</u>, type, mileage,is_borrowed,brand)</li>
+        <li>Service_record(<u>service_record, plate_number</u>)</li>
+            <ul>    
+                <li>FK: plate_number ⊆ Car(plate_number)</li>
+            </ul>
+        <li>Requires(<u>service_number</u>, plate_number)</li>
+        <li>Service(<u>service_number</u>, price, date, type)</li>
+            <ul>
+                <li>FK: plate_number ⊆ Car(plate_number)</li>
+                <li>FK: service_number ⊆ Service(service_number)</li>
+            </ul>
+        <li>Employee(<u>employee_code</u>,name, phone, role)</li>
+        <li>Birth_number(<u>employee</u>, birth_number)</li>![image](https://github.com/user-attachments/assets/4e328335-9c2a-41d3-b77d-6cec464f8439)
+
+        <li>Is_responsible_for(<u>employee, service_number</u>)</li>
+            <ul>
+                <li>FK: employee ⊆ Employee(employee_code)</li>
+                <li>FK: service_number ⊆ Service(service_number)</li>
+            </ul>
+        <li>Is_superior_to(<u>employee</u>, supervisor)</li>
+            <ul>
+                <li>FK: employee ⊆ Employee(employee_code)</li>
+                <li>FK: supervisor ⊆ Employee(employee_code)</li>   
+            </ul>
+        <li>Operation(<u>date, employee</u>, <u>date, customer</u>,<u>date,car</u>)</li>
+            <ul>
+                
+                <li>FK: employee ⊆ Employee(employee_code)</li>
+                <li>FK: customer ⊆ Customer(name, street, city, postal_code)</li>
+                <li>FK: car ⊆ Car(plate_number)</li>
+            </ul>
+        <li>Rental(<u>date, customer</u>, fine_per_day, price_per_day)</li>
+            <ul>
+                <li>FK: date, customer ⊆ Operation(date, customer)</li>
+            </ul>
+        <li>Return(<u>date, customer</u>, status)</li>
+            <ul>
+                <li>FK: date, customer ⊆ Operation(date, customer)</li>
+            </ul>
+        <li>Customer(<u>name, street, city, postal_code</u>)</li>
+        <li>Payment(<u>customer,date</u>, card, cash, <u>rental</u>)</li>
+            <ul>
+                <li>FK: rental ⊆ Rental(date, customer)</li>
+                <li>FK: customer ⊆ Customer(street, city, postal_code,name)</li>
+            </ul>
+    </ul>
+</body>
+</html>
