@@ -16,9 +16,10 @@ CREATE TABLE service_record(
 );
 
 CREATE TABLE requires(
-    id_requires_service_number int REFERENCES service ON UPDATE CASCADE ON DELETE RESTRICT,
-    plate_number char(7) NOT NULL REFERENCES car ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT requiresPK PRIMARY KEY (id_requires_service_number)
+    id_requires SERIAL PRIMARY KEY,
+    requires_service_number int REFERENCES service ON UPDATE CASCADE ON DELETE RESTRICT,
+    plate_number char(7) NOT NULL REFERENCES car ON UPDATE CASCADE ON DELETE RESTRICT
+
 );
 
 CREATE TABLE service(
@@ -50,29 +51,32 @@ CREATE TABLE is_responsible_for(
 );
 
 CREATE TABLE is_superior_to(
-    employee int REFERENCES employee,
-    supervisor int REFERENCES employee,
+    employee int REFERENCES employee ON UPDATE CASCADE ON DELETE RESTRICT ,
+    supervisor int REFERENCES employee ON UPDATE CASCADE ON DELETE RESTRICT,
     CONSTRAINT is_superior_toPK PRIMARY KEY (employee)
 );
 
 CREATE TABLE operation(
-    operation_date date,
-    customer_name text,
-    customer_street text,
-    customer_city text,
+    operation_date date NOT NULL,
+    customer_name text NOT NULL,
+    customer_street text NOT NULL,
+    customer_city text NOT NULL,
     customer_postal_code varchar(5) CHECK (customer_postal_code ~ '^[0-9]{5}$'),
     car char(7) NOT NULL UNIQUE REFERENCES car,
     employee int NOT NULL UNIQUE REFERENCES employee,
+    CONSTRAINT operationFK FOREIGN KEY (operation_date,customer_name,customer_street,customer_city,customer_postal_code)
+        REFERENCES customer,
     CONSTRAINT operationPK PRIMARY KEY (operation_date,customer_name,customer_street,customer_city,customer_postal_code)
+
 );
 
 CREATE TABLE rental(
-    rental_date date,
-    customer_name text,
-    customer_street text,
-    customer_city text,
+    rental_date date NOT NULL,
+    customer_name text NOT NULL,
+    customer_street text NOT NULL,
+    customer_city text NOT NULL,
     customer_postal_code varchar(5) CHECK (customer_postal_code ~ '^[0-9]{5}$'),
-    fine_per_day int,
+    fine_per_day int NOT NULL,
     price_per_day int NOT NULL,
     CONSTRAINT rentalFK FOREIGN KEY (rental_date,customer_name,customer_street,customer_city,customer_postal_code)
                    REFERENCES operation,
@@ -81,23 +85,44 @@ CREATE TABLE rental(
 
 CREATE TABLE return (
     status text NOT NULL,
-    rental_date date,
-    customer_name text,
-    customer_street text,
-    customer_city text,
+    rental_date date NOT NULL,
+    customer_name text NOT NULL,
+    customer_street text NOT NULL,
+    customer_city text NOT NULL,
     customer_postal_code varchar(5) CHECK (customer_postal_code ~ '^[0-9]{5}$'),
     fine_per_day int,
     price_per_day int NOT NULL,
     CONSTRAINT rentalFK FOREIGN KEY (rental_date,customer_name,customer_street,customer_city,customer_postal_code)
         REFERENCES operation,
     CONSTRAINT rentalPK PRIMARY KEY (rental_date,customer_name,customer_street,customer_city,customer_postal_code)
-    
+
 );
 
 CREATE TABLE customer(
-    
-)
+    name text NOT NULL,
+    street text NOT NULL,
+    city text NOT NULL,
+    postal_code varchar(5) CHECK (postal_code ~ '^[0-9]{5}$'),
+    CONSTRAINT customerPK PRIMARY KEY (name,street,city, postal_code)
+);
 
+CREATE TABLE payment (
+    payment_id serial PRIMARY KEY,
+    payment_date date NOT NULL,
+    card decimal(10, 2) NOT NULL,
+    cash decimal(10, 2) NOT NULL,
+    customer_name text NOT NULL,
+    customer_street text NOT NULL,
+    customer_city text NOT NULL,
+    customer_postal_code VARCHAR(5) CHECK (customer_postal_code ~ '^[0-9]{5}$'),
+    rental_date date NOT NULL,
+    CONSTRAINT payment_customerFK FOREIGN KEY (customer_name, customer_street, customer_city, customer_postal_code)
+        REFERENCES customer(name, street, city, postal_code)
+        ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT payment_rentalFK FOREIGN KEY (rental_date, customer_name, customer_street, customer_city, customer_postal_code)
+        REFERENCES rental(rental_date, customer_name, customer_street, customer_city, customer_postal_code)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+);
 
 
 
