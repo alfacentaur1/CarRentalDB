@@ -87,9 +87,7 @@ CREATE TABLE rental (
 -- RETURN
 CREATE TABLE return (
                         operation_id INT PRIMARY KEY REFERENCES operation(id) ON UPDATE CASCADE ON DELETE RESTRICT,
-                        status TEXT NOT NULL,
-                        fine_per_day INT,
-                        price_per_day INT NOT NULL
+                        status TEXT NOT NULL
 );
 
 -- PAYMENT
@@ -180,14 +178,14 @@ INSERT INTO rental (operation_id, fine_per_day, price_per_day) VALUES
     (6, 0, 1200),
     (7, 0, 2200);
 
-INSERT INTO return (operation_id, status, fine_per_day, price_per_day) VALUES
-    (1, 'returned', 0, 1000),
-    (2, 'late', 300, 800),
-    (3, 'returned', 0, 900),
-    (4, 'damaged', 600, 1100),
-    (5, 'returned', 0, 950),
-    (6, 'late', 150, 1200),
-    (7, 'late', 150, 1200);
+INSERT INTO return (operation_id, status) VALUES
+    (1, 'returned'),
+    (2, 'late'),
+    (3, 'returned'),
+    (4, 'damaged'),
+    (5, 'returned'),
+    (6, 'late'),
+    (7, 'late');
 
 INSERT INTO payment (payment_date, card, cash, customer_id, rental_id) VALUES
     (CURRENT_DATE, 500.00, 500.00, 1, 1),
