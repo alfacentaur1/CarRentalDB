@@ -286,3 +286,5 @@ FROM generate_series(32, 32000) AS gs(series);
 
 -- SELECT COUNT(*) from employee;
 -- SELECT COUNT(*) FROM car;
+
+GRANT ALL PRIVILEGES ON DATABASE kopecfi3 TO fronelad;
