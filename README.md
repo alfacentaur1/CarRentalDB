@@ -270,12 +270,21 @@ LIMIT 4 OFFSET 2;
 SELECT employee.name
 FROM employee
          LEFT JOIN is_responsible_for ON employee.id = is_responsible_for.employee_id
-WHERE is_responsible_for.service_id IS NULL;
+WHERE is_responsible_for.service_id IS NULL
+LIMIT 30 OFFSET 0;
 
 -- DELETE FROM is_responsible_for WHERE employee_id = 6;
 
+-- fill employee table with 32k generated data
+INSERT INTO employee (name, phone, role)
+SELECT
+    'Employee ' || gs.series AS name,
+    '+420' || LPAD((100000000 + gs.series) :: TEXT, 9, '0') AS phone,
+    CASE
+        WHEN gs.series % 2 = 0 THEN 'Manager'
+        ELSE 'Worker'
+        END AS role
+FROM generate_series(32, 32000) AS gs(series);
 
-
-
-
-
+-- SELECT COUNT(*) from employee;
+-- SELECT COUNT(*) FROM car;
