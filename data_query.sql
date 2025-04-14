@@ -262,12 +262,12 @@ GROUP BY brand,name
 ORDER BY brand ASC
 LIMIT 4 OFFSET 2;
 
--- selects the names of employees who are not assigned to any service - vnější spojení tabulek
+-- selects the names of employees who are not assigned to any service,limited by 15 - vnější spojení tabulek
 SELECT employee.name
 FROM employee
          LEFT JOIN is_responsible_for ON employee.id = is_responsible_for.employee_id
 WHERE is_responsible_for.service_id IS NULL
-LIMIT 30 OFFSET 0;
+LIMIT 15 OFFSET 0;
 
 -- DELETE FROM is_responsible_for WHERE employee_id = 6;
 
@@ -285,4 +285,5 @@ FROM generate_series(32, 32000) AS gs(series);
 -- SELECT COUNT(*) from employee;
 -- SELECT COUNT(*) FROM car;
 
+-- role definiton for another member
 GRANT ALL PRIVILEGES ON DATABASE kopecfi3 TO fronelad;
