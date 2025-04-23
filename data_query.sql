@@ -287,3 +287,6 @@ FROM generate_series(32, 32000) AS gs(series);
 
 -- role definiton for another member
 GRANT ALL PRIVILEGES ON DATABASE kopecfi3 TO fronelad;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO fronelad;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO fronelad;
+GRANT ALL PRIVILEGES ON SCHEMA public TO fronelad;
