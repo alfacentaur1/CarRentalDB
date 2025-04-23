@@ -16,6 +16,8 @@ FROM car c
          JOIN customer cu  ON o.customer_id = cu.id
 WHERE c.is_borrowed = TRUE;
 
+SELECT * FROM currently_rented_cars;
+
 CREATE OR REPLACE FUNCTION insert_into_borrowed()
     RETURNS TRIGGER AS
 $$
@@ -84,4 +86,21 @@ CREATE INDEX search_by_phone ON employee(phone);
 EXPLAIN ANALYZE
 SELECT * FROM employee WHERE phone='+420888999000';
 
-DROP INDEX search_by_phone;
+-- DROP INDEX search_by_phone;
+
+
+-- first trans - dirty read simulation - update data
+--1. step
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+BEGIN;
+UPDATE car SET mileage = mileage - 500 WHERE id = 1;
+SELECT * from car where id = 1;
+
+--3.step
+COMMIT;
+
+--second trans - read uncommitted data -> mileage is still not changed
+--2. step
+BEGIN;
+SELECT * FROM car WHERE id = 1;
+COMMIT;
