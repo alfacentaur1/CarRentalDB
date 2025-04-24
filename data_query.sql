@@ -1,3 +1,13 @@
+-- ON UPDATE/DELETE oduvodneni 
+--Zachování datové integrity
+--Neumožňuje smazat záznam v rodičovské tabulce, pokud na něj odkazují záznamy v jiných tabulkách. Tím se zabrání vzniku "sirotků" (např. objednávka bez zákazníka).
+
+--Ochrana důležitých vazeb
+--aby data zůstala konzistentní a kompletní 
+
+
+
+
 -- CAR
 CREATE TABLE car (
                      id SERIAL PRIMARY KEY,
