@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+    <persistence-unit name="default">
+
+        <class>entities.BirthNumber</class>
+        <class>entities.Car</class>
+        <class>entities.Customer</class>
+        <class>entities.Employee</class>
+        <class>entities.IsResponsibleFor</class>
+        <class>entities.IsResponsibleFor</class>
+        <class>entities.Operation</class>
+        <class>entities.Payment</class>
+        <class>entities.Rental</class>
+        <class>entities.Require</class>
+        <class>entities.Return</class>
+        <class>entities.ServiceRecord</class>
+        <class>entities.Service</class>
+        <properties>
+            <property name="toplink.jdbc.url" value="jdbc:postgresql://slon.felk.cvut.cz:5432/kopecfi3"/>
+            <property name="toplink.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="toplink.jdbc.user" value="kopecfi3"/>
+            <property name="toplink.jdbc.password" value="2Zirafa23"/>
+            <property name="hibernate.connection.url" value="jdbc:postgresql://slon.felk.cvut.cz:5432/kopecfi3"/>
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.connection.username" value="kopecfi3"/>
+            <property name="hibernate.connection.password" value="2Zirafa23"/>
+            <property name="openjpa.ConnectionURL" value="jdbc:postgresql://slon.felk.cvut.cz:5432/kopecfi3"/>
+            <property name="openjpa.ConnectionDriverName" value="org.postgresql.Driver"/>
+            <property name="openjpa.ConnectionUserName" value="kopecfi3"/>
+            <property name="openjpa.ConnectionPassword" value="2Zirafa23"/>
+            <property name="eclipselink.jdbc.url" value="jdbc:postgresql://slon.felk.cvut.cz:5432/kopecfi3"/>
+            <property name="eclipselink.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="eclipselink.jdbc.user" value="kopecfi3"/>
+            <property name="eclipselink.jdbc.password" value="2Zirafa23"/>
+        </properties>
+    </persistence-unit>
+</persistence>
+
