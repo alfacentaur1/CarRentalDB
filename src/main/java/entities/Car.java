@@ -78,4 +78,13 @@ public class Car {
         this.brand = brand;
     }
 
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", model='" + type + '\'' +
+                ", mileage=" + mileage +
+                '}';
+    }
+
 }

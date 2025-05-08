@@ -1,22 +1,19 @@
 package DAO;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 public abstract class BaseDao<T, ID> {
-    protected final jakarta.persistence.EntityManager entityManager;
+    protected final EntityManager entityManager;
     private final Class<T> entityClass;
 
-    public BaseDao(jakarta.persistence.EntityManager entityManager, Class<T> entityClass) {
+    public BaseDao(EntityManager entityManager, Class<T> entityClass) {
         this.entityManager = entityManager;
         this.entityClass = entityClass;
     }
 
     public void save(T entity) {
-        entityManager.getTransaction().begin();
-        entityManager.persist(entity);
-        entityManager.getTransaction().commit();
+        entityManager.persist(entity); // no transaction begin/commit
     }
 
     public T findById(ID id) {
@@ -29,14 +26,10 @@ public abstract class BaseDao<T, ID> {
     }
 
     public void update(T entity) {
-        entityManager.getTransaction().begin();
-        entityManager.merge(entity);
-        entityManager.getTransaction().commit();
+        entityManager.merge(entity); // no transaction begin/commit
     }
 
     public void delete(T entity) {
-        entityManager.getTransaction().begin();
         entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
-        entityManager.getTransaction().commit();
     }
 }
