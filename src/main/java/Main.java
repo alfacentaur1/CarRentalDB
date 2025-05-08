@@ -21,9 +21,10 @@ public class Main {
                     System.out.println("Rental ID: " + rental.getId() +
                             ", Customer: " + rental.getCustomer().getName()));
         } finally {
-            em.close();
+            // Em will be closed after all the transactions
         }
 
+        // Create two EntityManagers for transaction simulation
         EntityManager em1 = emf.createEntityManager();
         EntityManager em2 = emf.createEntityManager();
 
@@ -52,6 +53,46 @@ public class Main {
         System.out.println("Final state: " + carDao1.findAll());
         em1.getTransaction().commit();
 
+        Car newCar = new Car();
+        newCar.setType("Electric Car");
+        newCar.setMileage(10000);
+        newCar.setBrand("Tesla");  // Set the brand field
+        newCar.setPlateNumber("1234567");
+        newCar.setIsBorrowed(false);
+
+        em.getTransaction().begin();
+        em.persist(newCar);  // Persist the new car
+        em.getTransaction().commit();
+        System.out.println("New car inserted: " + newCar);
+
+        // Update car mileage
+        int newMileage = 1000;
+        int carId = 1;
+        Car car = em.find(Car.class, carId);
+        if (car != null) {
+            car.setMileage(newMileage);
+            em.getTransaction().begin();
+            em.merge(car);  // Using merge for updating an existing car entity
+            em.getTransaction().commit();
+            System.out.println("Car mileage updated: " + car);
+        } else {
+            System.out.println("Car not found!");
+        }
+
+        // Update car type
+        Car carToUpdate = em.find(Car.class, carId);
+        if (carToUpdate != null) {
+            carToUpdate.setType("Motorcycle");
+            em.getTransaction().begin();
+            em.merge(carToUpdate);  // Using merge for updating car type
+            em.getTransaction().commit();
+            System.out.println("Car model updated: " + carToUpdate);
+        } else {
+            System.out.println("Car not found!");
+        }
+
+        // Cleanup
+        em.close();
         em1.close();
         em2.close();
         emf.close();
