@@ -9,4 +9,3 @@ public class CustomerDao extends BaseDao<Customer, Integer> {
     }
 }
 
-

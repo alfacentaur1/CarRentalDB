@@ -9,4 +9,3 @@ public class ServiceDao extends BaseDao<Service, Integer> {
     }
 }
 
-

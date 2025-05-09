@@ -12,96 +12,6 @@ public class Main {
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
         EntityManager em = emf.createEntityManager();
-
-        ServiceRecordDao serviceRecordDao = new ServiceRecordDao(em);
-
-        // === INSERT new service record ===
-        ServiceRecord newRecord = new ServiceRecord();
-        newRecord.setId(401); // set free ID
-        newRecord.setDescription("Výmena brzdových destiček");
-
-        // find a car which the service record will belong to
-        Car existingCar = em.find(Car.class, 2); // suppose car with id = 1 exists
-        if (existingCar != null) {
-            newRecord.setCar(existingCar);
-
-            em.getTransaction().begin();
-            serviceRecordDao.save(newRecord);
-            em.getTransaction().commit();
-            System.out.println("New service record inserted for car ID: " + existingCar.getId());
-        } else {
-            System.out.println("Car not found – cannot insert service record.");
-        }
-
-        // === UPDATE service record ===
-        ServiceRecord recordToUpdate = serviceRecordDao.findById(401);
-        if (recordToUpdate != null) {
-            recordToUpdate.setDescription("Kompletní servis podvozku");
-
-            em.getTransaction().begin();
-            serviceRecordDao.update(recordToUpdate);
-            em.getTransaction().commit();
-            System.out.println("Service record updated: " + recordToUpdate.getDescription());
-        } else {
-            System.out.println("Service record not found for update.");
-        }
-
-
-        // === INSERT new service ===
-        ServiceDao serviceDao = new ServiceDao(em);
-        Service newService = new Service();
-        newService.setId(301);  // set free ID
-        newService.setType("Oil Change");
-        newService.setPrice(1500);
-        newService.setServiceDate(LocalDate.of(2025, 5, 10));
-
-        em.getTransaction().begin();
-        serviceDao.save(newService);
-        em.getTransaction().commit();
-        System.out.println("New service inserted: " + newService.getType());
-
-    // === UPDATE existing service ===
-        Service serviceToUpdate = serviceDao.findById(301);
-        if (serviceToUpdate != null) {
-            serviceToUpdate.setPrice(1800);
-            serviceToUpdate.setType("Full Service");
-
-            em.getTransaction().begin();
-            serviceDao.update(serviceToUpdate);
-            em.getTransaction().commit();
-            System.out.println("Service updated: " + serviceToUpdate.getType() + ", price: " + serviceToUpdate.getPrice());
-        } else {
-            System.out.println("Service not found for update.");
-        }
-
-
-
-        // === INSERT + UPDATE CUSTOMER
-        CustomerDao customerDao = new CustomerDao(em);
-        Customer newCustomer = new Customer();
-        newCustomer.setId(102); // or free any id
-        newCustomer.setName("Petr Novák");
-        newCustomer.setStreet("Rovná");
-        newCustomer.setCity("Praha");
-        newCustomer.setPostalCode("11001");
-
-        em.getTransaction().begin();
-        customerDao.save(newCustomer);
-        em.getTransaction().commit();
-        System.out.println("New customer inserted: " + newCustomer.getName());
-
-        Customer customerToUpdate = customerDao.findById(101);
-        if (customerToUpdate != null) {
-            customerToUpdate.setCity("Litvínov");
-            em.getTransaction().begin();
-            customerDao.update(customerToUpdate);
-            em.getTransaction().commit();
-            System.out.println("Customer updated: " + customerToUpdate.getName() + ", new city: " + customerToUpdate.getCity());
-        } else {
-            System.out.println("Customer not found");
-        }
-
-
         // Query rentals for customer "Petr Svoboda" (id = 1)
         try {
             TypedQuery<Rental> query = em.createQuery(
@@ -181,6 +91,94 @@ public class Main {
             System.out.println("Car model updated: " + carToUpdate);
         } else {
             System.out.println("Car not found!");
+        }
+
+        ServiceRecordDao serviceRecordDao = new ServiceRecordDao(em);
+
+        // === INSERT new service record ===
+        ServiceRecord newRecord = new ServiceRecord();
+        newRecord.setId(401); // set free ID
+        newRecord.setDescription("Výmena brzdových destiček");
+
+        // find a car which the service record will belong to
+        Car existingCar = em.find(Car.class, 2); // suppose car with id = 1 exists
+        if (existingCar != null) {
+            newRecord.setCar(existingCar);
+
+            em.getTransaction().begin();
+            serviceRecordDao.save(newRecord);
+            em.getTransaction().commit();
+            System.out.println("New service record inserted for car ID: " + existingCar.getId());
+        } else {
+            System.out.println("Car not found – cannot insert service record.");
+        }
+
+        // === UPDATE service record ===
+        ServiceRecord recordToUpdate = serviceRecordDao.findById(401);
+        if (recordToUpdate != null) {
+            recordToUpdate.setDescription("Kompletní servis podvozku");
+
+            em.getTransaction().begin();
+            serviceRecordDao.update(recordToUpdate);
+            em.getTransaction().commit();
+            System.out.println("Service record updated: " + recordToUpdate.getDescription());
+        } else {
+            System.out.println("Service record not found for update.");
+        }
+
+
+        // === INSERT new service ===
+        ServiceDao serviceDao = new ServiceDao(em);
+        Service newService = new Service();
+        newService.setId(301);  // set free ID
+        newService.setType("Oil Change");
+        newService.setPrice(1500);
+        newService.setServiceDate(LocalDate.of(2025, 5, 10));
+
+        em.getTransaction().begin();
+        serviceDao.save(newService);
+        em.getTransaction().commit();
+        System.out.println("New service inserted: " + newService.getType());
+
+        // === UPDATE existing service ===
+        Service serviceToUpdate = serviceDao.findById(301);
+        if (serviceToUpdate != null) {
+            serviceToUpdate.setPrice(1800);
+            serviceToUpdate.setType("Full Service");
+
+            em.getTransaction().begin();
+            serviceDao.update(serviceToUpdate);
+            em.getTransaction().commit();
+            System.out.println("Service updated: " + serviceToUpdate.getType() + ", price: " + serviceToUpdate.getPrice());
+        } else {
+            System.out.println("Service not found for update.");
+        }
+
+
+
+        // === INSERT + UPDATE CUSTOMER
+        CustomerDao customerDao = new CustomerDao(em);
+        Customer newCustomer = new Customer();
+        newCustomer.setId(102); // or free any id
+        newCustomer.setName("Petr Novák");
+        newCustomer.setStreet("Rovná");
+        newCustomer.setCity("Praha");
+        newCustomer.setPostalCode("11001");
+
+        em.getTransaction().begin();
+        customerDao.save(newCustomer);
+        em.getTransaction().commit();
+        System.out.println("New customer inserted: " + newCustomer.getName());
+
+        Customer customerToUpdate = customerDao.findById(101);
+        if (customerToUpdate != null) {
+            customerToUpdate.setCity("Litvínov");
+            em.getTransaction().begin();
+            customerDao.update(customerToUpdate);
+            em.getTransaction().commit();
+            System.out.println("Customer updated: " + customerToUpdate.getName() + ", new city: " + customerToUpdate.getCity());
+        } else {
+            System.out.println("Customer not found");
         }
 
         // Cleanup
